@@ -6,10 +6,12 @@ from common.file_type_to_script_argument_extractor import registry as FileTypeTo
 from common.script_arguments import ScriptArguments
 
 
-
+## ------- Configuration -------
 scripts_folder = f"{os.getcwd()}/scripts"
 compiler = FlowLauncherCompilerType()
-
+output_path = Path(f"{os.getcwd()}/.output/Favorites.conf")
+## -----------------------------
+ 
 def main():
     all_arguments: list[ScriptArguments] = []
     
@@ -29,12 +31,11 @@ def main():
     
     if all_arguments:
         result = compiler.compile(all_arguments)
-        print(result)
-        # output_path.write_text(result, encoding="utf-8")
-        # print(f"\n✅ Compiled {len(all_arguments)} script functions into: {output_path}")
+        output_path.exists() or output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(result, encoding="utf-8")
+        print(f"\n✅ Compiled {len(all_arguments)} script functions into: {output_path}")
     else:
         print("No valid script functions found.")
 
 if __name__ == "__main__":
     main()
-    input("Press Enter to exit...")
